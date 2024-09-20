@@ -8,23 +8,6 @@ import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
-
-/*
-
-const items = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Delivery', '4'),
-    
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
-];
-*/
-
 // Residences data for the form
 const residences = [
   {
@@ -137,7 +120,8 @@ const DeliveryDetails = () => {
 
     try {
       console.log('Entered details:', formData);
-      const response = await axios.post('http://localhost:5000/api/deliveryDetails', formData);
+      const response = await axios.post('http://localhost:8020/api/items/item_create', formData);
+
       console.log('Form data saved:', response.data);
       navigate('/login');
     } catch (error) {
@@ -201,7 +185,7 @@ const DeliveryDetails = () => {
 >
 
         <Form.Item
-          name="email"
+          name="emaill"
           label="E-mail"
           rules={[
             { type: 'email', message: 'The input is not valid E-mail!' },
@@ -287,3 +271,5 @@ const DeliveryDetails = () => {
 
 
 export default DeliveryDetails;
+
+

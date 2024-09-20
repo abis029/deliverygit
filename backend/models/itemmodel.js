@@ -4,7 +4,10 @@ const itemchema=mongoose.Schema({
     emaill:String,
     fnamee:String,
     lnamee:String,
-    habitual_residence:String,
+    habitual_residence: {
+        type: [String], // Array of strings
+        required: true,
+      },
     address:String,
     p_nbb:String,
     zipcode:String,
