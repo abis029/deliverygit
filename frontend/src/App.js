@@ -9,7 +9,7 @@ import ManagerSignin from './ManagerComponent/ManagerSignin';
 import Product from './ItemComponent/product';
 import DiliveryDetails from './ManagerComponent/managerdetails';
 import ManagerUpdateItem from './ManagerComponent/UpdateMnaneger';
-
+import Card from './ItemComponent/card'
 import Home from './summa/Home';
 
 
@@ -23,7 +23,8 @@ function App() {
  <Route path='/' element={<Home/>}></Route>
 
  <Route path='/manager' element={<ManagerSignUp/>}></Route>
- 
+ <Route path='/card' element={<Card/>}></Route>
+
 
 <Route path='/add-item' element={<Product/>}></Route>
 <Route path='/itemdetails' element={<ItemDetails/>}></Route>

@@ -39,6 +39,11 @@ const adminUserItems = [
         icon: <SyncOutlined />,
         label: "updateItem",
       },
+      {
+        key: "4",
+        icon: <StockOutlined />,
+        label: "card",
+      },
     ],
   },
 
@@ -100,7 +105,9 @@ const App = ({ children, userType }) => {
     if (item.key === "22") {
       navigate("/ManUpdate:id");
     }
-   
+    if (item.key === "4") {
+      navigate("/card");
+    }
   };
 
   const {
@@ -113,24 +120,36 @@ const App = ({ children, userType }) => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        width={200}
-        style={{ backgroundColor: "#7C93C3", overflow: "hidden", position: "fixed", height: "100vh", left: 0 }}
-      >
-       
-       <Menu
-        theme="light"
-        defaultSelectedKeys={["dashboard"]}
-        mode="inline"
-        items={userType === "admin" ? adminUserItems : adminUserItems}
-        onClick={handleMenuClick}
-        style={{ backgroundColor: "#E1D7B7", color: "#fff", marginTop: "70px" }}
-      />
+<Sider
+  collapsible
+  collapsed={collapsed}
+  onCollapse={(value) => setCollapsed(value)}
+  width={200}
+  style={{ backgroundColor: "#D1BB9E", overflow: "hidden", position: "fixed", height: "100vh", left: 0 }}
+>
+  <style>
+    {`
+      .ant-menu-item:hover {
+        background-color: white !important;
+        color: blue !important; /* Parent color change */
+      }
 
-      </Sider>
+      .ant-menu-item-child {
+        background-color: wheat !important;
+      }
+    `}
+  </style>
+  <Menu
+    theme="light"
+    defaultSelectedKeys={["dashboard"]}
+    mode="inline"
+    items={userType === "admin" ? adminUserItems : adminUserItems}
+    onClick={handleMenuClick}
+    style={{ backgroundColor: "#EAD8C0", color: "#ffffff", marginTop: "70px" }}
+  />
+</Sider>
+
+
 
       <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
         <Header
@@ -140,7 +159,7 @@ const App = ({ children, userType }) => {
             left: collapsed ? 80 : 200,
             width: `calc(100% - ${collapsed ? 80 : 200}px)`,
             height: "64px",
-            backgroundColor: "#1E2A5E",
+            backgroundColor: "#5F6F52",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-
 import { useNavigate } from 'react-router-dom';
 import LayoutNew from '../Layout';
-import { Layout} from "antd";
+import { Layout, Modal,Progress } from "antd";
+
 function Product() {
     const navigate = useNavigate();
     const [order, setOrder] = useState({
@@ -17,6 +17,7 @@ function Product() {
     });
 
     const [errors, setErrors] = useState({});
+    const [modal, setModal] = useState({ visible: false, message: '', isSuccess: false });
 
     const handleOnChange = (e) => {
         const { value, name } = e.target;
@@ -81,8 +82,8 @@ function Product() {
         try {
             const response = await axios.post("http://localhost:8020/item_create", order);
             console.log(response.data);
-            alert("Successfully added!");
-            navigate("/itemdetails");
+            setModal({ visible: true, message: "Successfully added!", isSuccess: true });
+           // navigate("/itemdetails");
             setOrder({
                 emaill: "",
                 fnamee: "",
@@ -95,7 +96,13 @@ function Product() {
             setErrors({});
         } catch (error) {
             console.error("There was an error adding the item:", error);
+            setModal({ visible: true, message: "There was an error adding the item.", isSuccess: false });
         }
+    };
+
+    const handleModalOk = () => {
+        setModal({ ...modal, visible: false });
+        navigate("/itemdetails");
     };
 
     const containerStyle = {
@@ -141,7 +148,7 @@ function Product() {
         <LayoutNew>
             <Layout>
                 <div style={containerStyle}>
-                    <h2 style={{ textAlign: 'center', color: '#1E2A5E' }}>User</h2>
+                    <h2 style={{ textAlign: 'center', color: '#1E2A5E' }}>asufUser</h2>
                     <form onSubmit={handleSubmit}>
                         <label style={labelStyle}>Email:</label>
                         <input
@@ -226,10 +233,43 @@ function Product() {
                         <p>Ant Design @2024 Created by Ant UED</p>
                     </div>
                 </div>
+                <Modal
+                    title={modal.isSuccess ? 'Success' : 'Error'}
+                    visible={modal.visible}
+
+                    footer={null} // Remove default footer if you don't need it
+                >
+                    <div style={{ textAlign: 'center' }}>
+                        <Progress
+                            type="circle"
+                            percent={modal.isSuccess ? 100 : 70}
+                            status={modal.isSuccess ? 'success' : 'exception'}
+                            style={{ marginBottom: '16px' }}
+                        />
+                        <p>{modal.message}</p>
+
+                        <button
+                onClick={handleModalOk}
+                style={{
+                    padding: '10px 20px',
+                    margin: '0 10px',
+                    backgroundColor: '#1E2A5E',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                }}
+            >
+                OK
+            </button>
+
+      
+                    </div>
+                </Modal>
             </Layout>
         </LayoutNew>
     );
 }
 
 export default Product;
-

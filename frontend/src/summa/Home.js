@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LayoutNew from '../Layout';
 
 import {Layout, theme, Cascader, Button, message, Form, Input, Steps, Select } from 'antd';
 import axios from 'axios';
@@ -154,40 +155,57 @@ const DeliveryDetails = () => {
   );
 
   return (
-    <div>
+    
+  <LayoutNew>
+    <Layout>
+  <div 
+  className='border' 
+  style={{
+    marginLeft:'70px',
+    width:'1100px',
+    padding:'20px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    backgroundColor: '#EDE8DC',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+
+  }}
+>
       {/* Steps Component */}
       <Steps
         size="small"
         current={1}
         items={[
-          {
-            title: 'Login',
-          },
-          {
-            title: 'Delivery',
-          },
-          {
-            title: 'Payment',
-          },
+          { title: 'Login' },
+          { title: 'Delivery' },
+          { title: 'Payment' }
         ]}
         style={{ marginBottom: '20px' }}
       />
 
       {/* Form */}
       <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        style={{ maxWidth: 600, margin: '0 auto' }}
-        scrollToFirstError
-      >
+  {...formItemLayout}
+  form={form}
+  name="register"
+  onFinish={onFinish}
+  style={{
+    maxWidth: '600px',
+    margin: '0 auto',
+    backgroundColor: '#EDE8DC', // Change this to your desired background color
+    padding: '20px', // Optional: add padding for better spacing
+    borderRadius: '8px', // Optional: maintain border radius
+    color: '#333', // Change text color if needed
+  }}
+  scrollToFirstError
+>
+
         <Form.Item
           name="email"
           label="E-mail"
           rules={[
             { type: 'email', message: 'The input is not valid E-mail!' },
-            { required: true, message: 'Please input your E-mail!' },
+            { required: true, message: 'Please input your E-mail!' }
           ]}
         >
           <Input />
@@ -236,7 +254,7 @@ const DeliveryDetails = () => {
             }
           ]}
         >
-          <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+          <Input addonBefore={prefixSelector} style={{ width: '100%', backgroundColor:'#ffffff'}} />
         </Form.Item>
 
         <Form.Item
@@ -259,7 +277,11 @@ const DeliveryDetails = () => {
           </Button>
         </Form.Item>
       </Form>
-    </div>
+      </div>
+    </Layout>
+  </LayoutNew>
+
+
   );
 };
 
