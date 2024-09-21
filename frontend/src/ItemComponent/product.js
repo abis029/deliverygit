@@ -146,7 +146,7 @@ function Product() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8020/api/items/item_create", order);
+            const response = await axios.post("http://localhost:8020/api/managers/add_manager", order);
             console.log(response.data);
             setModal({ visible: true, message: "Successfully added!", isSuccess: true });
             setOrder({
@@ -274,7 +274,7 @@ function Product() {
                 </div>
                 <Modal
                     title={modal.isSuccess ? 'Success' : 'Error'}
-                    visible={modal.visible}
+                    open={modal.visible}
 
                     footer={null} // Remove default footer if you don't need it
                 >

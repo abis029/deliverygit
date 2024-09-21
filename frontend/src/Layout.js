@@ -39,11 +39,7 @@ const adminUserItems = [
         icon: <SyncOutlined />,
         label: "updateItem",
       },
-      {
-        key: "4",
-        icon: <StockOutlined />,
-        label: "card",
-      },
+      
     ],
   },
 
@@ -105,9 +101,7 @@ const App = ({ children, userType }) => {
     if (item.key === "22") {
       navigate("/ManUpdate:id");
     }
-    if (item.key === "4") {
-      navigate("/card");
-    }
+
   };
 
   const {
