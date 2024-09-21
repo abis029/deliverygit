@@ -1,11 +1,96 @@
 import { useState } from "react";
 import axios from "axios";
-
 import { useNavigate } from 'react-router-dom';
 import LayoutNew from '../Layout';
-import { Layout} from "antd";
+import { Layout, Modal, Progress, Steps, Form, Input, Button, Cascader } from "antd";
+
+const residences = [
+    {
+      value: 'central',
+      label: 'Central',
+      children: [
+        { value: 'kandy', label: 'Kandy' },
+        { value: 'matale', label: 'Matale' },
+        { value: 'nuwaraEliya', label: 'Nuwara Eliya' }
+      ],
+    },
+    {
+      value: 'eastern',
+      label: 'Eastern',
+      children: [
+        { value: 'batticaloa', label: 'Batticaloa' },
+        { value: 'ampara', label: 'Ampara' },
+        { value: 'trincomalee', label: 'Trincomalee' }
+      ],
+    },
+    {
+      value: 'northern',
+      label: 'Northern',
+      children: [
+        { value: 'jaffna', label: 'Jaffna' },
+        { value: 'kilinochchi', label: 'Kilinochchi' },
+        { value: 'mannar', label: 'Mannar' },
+        { value: 'mullaitivu', label: 'Mullaitivu' },
+        { value: 'vavuniya', label: 'Vavuniya' }
+      ],
+    },
+    {
+      value: 'northCentral',
+      label: 'North Central',
+      children: [
+        { value: 'anuradhapura', label: 'Anuradhapura' },
+        { value: 'polonnaruwa', label: 'Polonnaruwa' }
+      ],
+    },
+    {
+      value: 'northWestern',
+      label: 'North Western',
+      children: [
+        { value: 'kurunegala', label: 'Kurunegala' },
+        { value: 'puttalam', label: 'Puttalam' }
+      ],
+    },
+    {
+      value: 'sabaragamuwa',
+      label: 'Sabaragamuwa',
+      children: [
+        { value: 'ratnapura', label: 'Ratnapura' },
+        { value: 'kegalle', label: 'Kegalle' }
+      ],
+    },
+    {
+      value: 'southern',
+      label: 'Southern',
+      children: [
+        { value: 'galle', label: 'Galle' },
+        { value: 'matara', label: 'Matara' },
+        { value: 'hambantota', label: 'Hambantota' }
+      ],
+    },
+    {
+      value: 'uva',
+      label: 'Uva',
+      children: [
+        { value: 'badulla', label: 'Badulla' },
+        { value: 'moneragala', label: 'Moneragala' }
+      ],
+    },
+    {
+      value: 'western',
+      label: 'Western',
+      children: [
+        { value: 'colombo', label: 'Colombo' },
+        { value: 'gampaha', label: 'Gampaha' },
+        { value: 'kalutara', label: 'Kalutara' }
+      ],
+    }
+];
+
 function Product() {
     const navigate = useNavigate();
+    const [form] = Form.useForm();
+    const [errors, setErrors] = useState({});
+    const [modal, setModal] = useState({ visible: false, message: '', isSuccess: false });
     const [order, setOrder] = useState({
         emaill: "",
         fnamee: "",
@@ -16,26 +101,9 @@ function Product() {
         zipcode: "",
     });
 
-    const [errors, setErrors] = useState({});
-
     const handleOnChange = (e) => {
         const { value, name } = e.target;
-
-        if ((name === "p_nbb" || name === "zipcode") && value && isNaN(value)) {
-            setErrors((prev) => ({
-                ...prev,
-                [name]: `${name === "p_nbb" ? "Phone number" : "Zip code"} must be numeric.`,
-            }));
-        } else {
-            setErrors((prev) => ({
-                ...prev,
-                [name]: "",
-            }));
-            setOrder((prev) => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
+        setOrder((prev) => ({ ...prev, [name]: value }));
     };
 
     const validate = () => {
@@ -70,8 +138,7 @@ function Product() {
         return newErrors;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         const newErrors = validate();
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -79,10 +146,9 @@ function Product() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8020/item_create", order);
+            const response = await axios.post("http://localhost:8020/api/items/item_create", order);
             console.log(response.data);
-            alert("Successfully added!");
-            navigate("/itemdetails");
+            setModal({ visible: true, message: "Successfully added!", isSuccess: true });
             setOrder({
                 emaill: "",
                 fnamee: "",
@@ -95,141 +161,154 @@ function Product() {
             setErrors({});
         } catch (error) {
             console.error("There was an error adding the item:", error);
+            setModal({ visible: true, message: "There was an error adding the item.", isSuccess: false });
         }
     };
 
-    const containerStyle = {
-        width: '60%',
-        margin: '0 auto',
-        backgroundColor: '#f4f4f4',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-    };
-
-    const labelStyle = {
-        display: 'block',
-        marginBottom: '10px',
-        fontWeight: 'bold',
-        color: '#333',
-    };
-
-    const inputStyle = {
-        width: '100%',
-        padding: '8px',
-        marginBottom: '20px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-    };
-
-    const errorStyle = {
-        color: 'red',
-        fontSize: '12px',
-        marginBottom: '10px',
-    };
-
-    const buttonStyle = {
-        padding: '10px 20px',
-        backgroundColor: '#1E2A5E',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
+    const handleModalOk = () => {
+        setModal({ ...modal, visible: false });
+        navigate("/itemdetails");
     };
 
     return (
         <LayoutNew>
             <Layout>
-                <div style={containerStyle}>
-                    <h2 style={{ textAlign: 'center', color: '#1E2A5E' }}>User</h2>
-                    <form onSubmit={handleSubmit}>
-                        <label style={labelStyle}>Email:</label>
-                        <input
-                            type="text"
-                            id="emaill"
+                <div style={{ width: '60%', margin: '0 auto', backgroundColor: '#f4f4f4', padding: '20px', borderRadius: '8px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
+                    <Steps
+                        size="small"
+                        current={1}
+                        items={[{ title: 'Login' }, { title: 'Delivery' }, { title: 'Payment' }]}
+                        style={{ marginBottom: '20px' }}
+                    />
+                    <Form
+                        form={form}
+                        name="register"
+                        onFinish={handleSubmit}
+                        style={{
+                            maxWidth: '600px',
+                            margin: '0 auto',
+                            backgroundColor: '#EDE8DC',
+                            padding: '20px',
+                            borderRadius: '8px',
+                            color: '#333',
+                        }}
+                        scrollToFirstError
+                    >
+                        <Form.Item
                             name="emaill"
-                            value={order.emaill}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.emaill && <span style={errorStyle}>{errors.emaill}</span>}
+                            label="E-mail"
+                            rules={[
+                                { type: 'email', message: 'The input is not valid E-mail!' },
+                                { required: true, message: 'Please input your E-mail!' }
+                            ]}
+                        >
+                            <Input name="emaill" value={order.emaill} onChange={handleOnChange} />
+                        </Form.Item>
 
-                        <label style={labelStyle}>First Name:</label>
-                        <input
-                            type="text"
-                            id="fnamee"
+                        <Form.Item
                             name="fnamee"
-                            value={order.fnamee}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.fnamee && <span style={errorStyle}>{errors.fnamee}</span>}
+                            label="First Name"
+                            rules={[{ required: true, message: 'Please input your First Name!', whitespace: true }]}
+                        >
+                            <Input name="fnamee" value={order.fnamee} onChange={handleOnChange} />
+                        </Form.Item>
 
-                        <label style={labelStyle}>Last Name:</label>
-                        <input
-                            type="text"
-                            id="lnamee"
+                        <Form.Item
                             name="lnamee"
-                            value={order.lnamee}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.lnamee && <span style={errorStyle}>{errors.lnamee}</span>}
+                            label="Last Name"
+                            rules={[{ required: true, message: 'Please input your Last Name!', whitespace: true }]}
+                        >
+                            <Input name="lnamee" value={order.lnamee} onChange={handleOnChange} />
+                        </Form.Item>
 
-                        <label style={labelStyle}>Habitual Residence:</label>
-                        <input
-                            type="text"
-                            id="habitual_residence"
+                        <Form.Item
                             name="habitual_residence"
-                            value={order.habitual_residence}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.habitual_residence && <span style={errorStyle}>{errors.habitual_residence}</span>}
+                            label="Habitual Residence"
+                            rules={[{ required: true, message: 'Please select your habitual residence!' }]}
+                        >
+                            <Cascader options={residences} onChange={(value) => setOrder({ ...order, habitual_residence: value })} />
+                        </Form.Item>
 
-                        <label style={labelStyle}>Address:</label>
-                        <input
-                            type="text"
-                            id="address"
+                        <Form.Item
                             name="address"
-                            value={order.address}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.address && <span style={errorStyle}>{errors.address}</span>}
+                            label="Address"
+                            rules={[{ required: true, message: 'Please input your address!', whitespace: true }]}
+                        >
+                            <Input name="address" value={order.address} onChange={handleOnChange} />
+                        </Form.Item>
 
-                        <label style={labelStyle}>Phone Number:</label>
-                        <input
-                            type="text"
-                            id="p_nbb"
+                        <Form.Item
                             name="p_nbb"
-                            value={order.p_nbb}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.p_nbb && <span style={errorStyle}>{errors.p_nbb}</span>}
+                            label="Phone Number"
+                            rules={[
+                                { required: true, message: 'Please input your phone number!' },
+                                {
+                                    pattern: /^\d{10}$/,
+                                    message: 'Phone number must be exactly 10 digits!'
+                                }
+                            ]}
+                        >
+                            <Input name="p_nbb" value={order.p_nbb} onChange={handleOnChange} />
+                        </Form.Item>
 
-                        <label style={labelStyle}>Zip Code:</label>
-                        <input
-                            type="text"
-                            id="zipcode"
+                        <Form.Item
                             name="zipcode"
-                            value={order.zipcode}
-                            onChange={handleOnChange}
-                            style={inputStyle}
-                        />
-                        {errors.zipcode && <span style={errorStyle}>{errors.zipcode}</span>}
+                            label="Zip Code"
+                            rules={[
+                                { required: true, message: 'Please input your zip code!' },
+                                {
+                                    pattern: /^\d{5}$/,
+                                    message: 'Zip code must be at least 5 digits!'
+                                }
+                            ]}
+                        >
+                            <Input name="zipcode" value={order.zipcode} onChange={handleOnChange} />
+                        </Form.Item>
 
-                        <button type="submit" style={buttonStyle}>Submit</button>
-                    </form>
-                    <div id='footer'>
-                        <p>Ant Design @2024 Created by Ant UED</p>
-                    </div>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </Form>
                 </div>
+                <Modal
+                    title={modal.isSuccess ? 'Success' : 'Error'}
+                    open={modal.visible}
+
+                    footer={null} // Remove default footer if you don't need it
+                >
+                    <div style={{ textAlign: 'center' }}>
+                        <Progress
+                            type="circle"
+                            percent={modal.isSuccess ? 100 : 70}
+                            status={modal.isSuccess ? 'success' : 'exception'}
+                            style={{ marginBottom: '16px' }}
+                        />
+                        <p>{modal.message}</p>
+
+                        <button
+                onClick={handleModalOk}
+                style={{
+                    padding: '10px 20px',
+                    margin: '0 10px',
+                    backgroundColor: '#1E2A5E',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                }}
+            >
+                OK
+            </button>
+
+      
+                    </div>
+                </Modal>
             </Layout>
         </LayoutNew>
     );
 }
 
 export default Product;
-

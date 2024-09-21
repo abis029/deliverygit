@@ -153,7 +153,7 @@ const DeliveryDetails = () => {
 
     try {
       console.log('Entered details:', formData);
-      const response = await axios.post('http://localhost:5000/api/deliveryDetails', formData);
+      const response = await axios.post('http://localhost:8020/api/managers/add_manager', formData);
       console.log('Form data saved:', response.data);
       navigate('/login');
     } catch (error) {

@@ -13,7 +13,7 @@ function DiliveryDetails() {
 
     const getfetchdata = async () => {
         try {
-            const data = await axios.get('http://localhost:8020/manager');
+            const data = await axios.get('http://localhost:8020/api/managers/managers');
             if (data.data.success) {
                 setshowdiscounts(data.data.data);
             }
@@ -27,7 +27,7 @@ function DiliveryDetails() {
     }, []);
 
     const handledelete = async (id) => {
-        const data = await axios.delete('http://localhost:8020/manager_delete/' + id);
+        const data = await axios.delete('http://localhost:8020/api/managers/manager_delete/' + id);
         if (data.data.success) {
             getfetchdata();
             alert('Item deleted Successfully!');

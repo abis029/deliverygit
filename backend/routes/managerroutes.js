@@ -5,11 +5,47 @@ const Manager = require("../models/managermodel");
 
 const router = express.Router();
 
-router.post("/add_manager",async(req,res)=>{
-    const data=new Manager(req.body)
-    await data.save()
-    res.send({success:true,message:"data created successfuly"})
-  })
+router.post("/add_manager", async (req, res) => {
+  const { username, dili_address, dili_date, dili_status, dili_method, dili_cost, assignes_personal, notes } = req.body;
+
+  try {
+      // Create a new Manager object from the request body
+      const newManager = new Manager({
+          username,
+          dili_address,
+          dili_date,
+          dili_status,
+          dili_method,
+          dili_cost,
+          assignes_personal,
+          notes
+      });
+
+      // Save the manager to the database
+      const savedManager = await newManager.save();
+
+      // Respond with the saved data
+      res.status(201).json({ success: true, message: "Manager added successfully", data: savedManager });
+  } catch (error) {
+      // Handle any errors that occur during the save process
+      console.error("Error adding manager:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error", error });
+  }
+});
+
+// GET all managers
+router.get("/managers", async (req, res) => {
+  try {
+    const managers = await Manager.find(); // Fetch all managers from the database
+    res.status(200).json({ success: true, message: "Managers fetched successfully", data: managers });
+  } catch (error) {
+    console.error("Error fetching managers:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error", error });
+  }
+});
+
+
+
 
   ////MANAGER Login 
 router.post("/signin",async (req, res) => {
@@ -48,11 +84,7 @@ router.post("/signin",async (req, res) => {
       res.status(500).json({ success: false, message: error });
     }
   });
-  router.get("/manager",async(req,res)=>{
-    const data= await Manager.find({})
-  
-    res.json({success:true,data:data})
-})
+
 router.delete("/manager_delete/:id",async(req,res)=>{
   const id=req.params.id
   const data=await Manager.deleteOne({_id:id})

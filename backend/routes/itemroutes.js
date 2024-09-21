@@ -12,12 +12,13 @@ router.get("/item",async(req,res)=>{
 })
 
 
-router.post("/item_create",async(req,res)=>{
-    const data=new itemmodel(req.body)
-    await data.save()
-    res.send({success:true,message:"data created successfuly"})
-})
-
+router.post("/item_create", async (req, res) => {
+    console.log("POST /item_create route hit");
+    const data = new itemmodel(req.body);
+    await data.save();
+    res.send({ success: true, message: "Data created successfully" });
+  });
+  
 
 router.put("/item_update",async(req,res)=>{
     const {id,...rest}=req.body
