@@ -146,7 +146,7 @@ function Product() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8020/api/managers/add_manager", order);
+            const response = await axios.post("http://localhost:8020/api/items/item_create", order);
             console.log(response.data);
             setModal({ visible: true, message: "Successfully added!", isSuccess: true });
             setOrder({

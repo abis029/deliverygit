@@ -24,21 +24,13 @@ const adminUserItems = [
     icon: <ApartmentOutlined />,
     label: "Item",
     children: [
+
       {
         key: "1",
-        icon: <StockOutlined />,
-        label: "product",
-      },
-      {
-        key: "2",
         icon: <SyncOutlined />,
         label: "itemdetail",
       },
-      {
-        key: "3",
-        icon: <SyncOutlined />,
-        label: "updateItem",
-      },
+
       
     ],
   },
@@ -86,15 +78,11 @@ const App = ({ children, userType }) => {
   }, []);
 
   const handleMenuClick = (item) => {
+
     if (item.key === "1") {
-      navigate("/add-item");
-    }
-    if (item.key === "2") {
       navigate("/itemdetails");
     }
-    if (item.key === "3") {
-      navigate("/itemupdate/:id");
-    }
+
     if (item.key === "11") {
       navigate("/managerDet");
     }

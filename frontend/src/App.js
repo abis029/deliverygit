@@ -2,7 +2,6 @@
 import './App.css';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 
-import UpdateItem from './ItemComponent/UpdateItem';
 import ManagerSignUp from './ManagerComponent/ManagerSignUp';
 import ManagerSignin from './ManagerComponent/ManagerSignin';
 import Product from './ItemComponent/product';
@@ -24,7 +23,6 @@ function App() {
 
  <Route path='/manager' element={<ManagerSignUp/>}></Route>
  <Route path='/itemdetails' element={<Card/>}></Route>
-<Route path='/itemupdate/:id' element={<UpdateItem/>}></Route>
 <Route path='/managerDet' element={<DiliveryDetails/>}></Route>
 <Route path="/ManUpdate:id" element={<ManagerUpdateItem/>}></Route>
 
