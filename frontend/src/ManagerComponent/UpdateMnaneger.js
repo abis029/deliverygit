@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import LayoutNew from '../Layout';
 
 
 function ManagerUpdateItem() {
@@ -138,95 +139,97 @@ function ManagerUpdateItem() {
     };
 
     return (
-        <div className='item-update'>
-            <h2>Update Delivery Details</h2>
-            <form>
-                <label>Customer Name:</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    onChange={handleInputChange}
-                    value={updateorder?.username}
-                />
-                {errors.username && <p className="error">{errors.username}</p>}
+        <LayoutNew>
+            <div className='item-update'>
+                <h2>Update Delivery Details</h2>
+                <form>
+                    <label>Customer Name:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        onChange={handleInputChange}
+                        value={updateorder?.username}
+                    />
+                    {errors.username && <p className="error">{errors.username}</p>}
 
-                <label>Delivery Address:</label>
-                <input
-                    type="text"
-                    id="dili_address"
-                    name="dili_address"
-                    onChange={handleInputChange}
-                    value={updateorder?.dili_address}
-                />
-                {errors.dili_address && <p className="error">{errors.dili_address}</p>}
+                    <label>Delivery Address:</label>
+                    <input
+                        type="text"
+                        id="dili_address"
+                        name="dili_address"
+                        onChange={handleInputChange}
+                        value={updateorder?.dili_address}
+                    />
+                    {errors.dili_address && <p className="error">{errors.dili_address}</p>}
 
-                <label>Delivery Date:</label>
-                <input
-                    type="date"
-                    id="dili_date"
-                    name="dili_date"
-                    onChange={handleInputChange}
-                    value={updateorder?.dili_date}
-                />
-                {errors.dili_date && <p className="error">{errors.dili_date}</p>}
+                    <label>Delivery Date:</label>
+                    <input
+                        type="date"
+                        id="dili_date"
+                        name="dili_date"
+                        onChange={handleInputChange}
+                        value={updateorder?.dili_date}
+                    />
+                    {errors.dili_date && <p className="error">{errors.dili_date}</p>}
 
-                <label>Delivery Status:</label>
-                <select
-                    id="dili_status"
-                    name="dili_status"
-                    onChange={handleInputChange}
-                    value={updateorder?.dili_status}
-                >
-                    <option value="">Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                </select>
-                {errors.dili_status && <p className="error">{errors.dili_status}</p>}
+                    <label>Delivery Status:</label>
+                    <select
+                        id="dili_status"
+                        name="dili_status"
+                        onChange={handleInputChange}
+                        value={updateorder?.dili_status}
+                    >
+                        <option value="">Select Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                    </select>
+                    {errors.dili_status && <p className="error">{errors.dili_status}</p>}
 
-                <label>Delivery Method:</label>
-                <input
-                    type="text"
-                    id="dili_method"
-                    name="dili_method"
-                    onChange={handleInputChange}
-                    value={updateorder?.dili_method}
-                />
-                {errors.dili_method && <p className="error">{errors.dili_method}</p>}
+                    <label>Delivery Method:</label>
+                    <input
+                        type="text"
+                        id="dili_method"
+                        name="dili_method"
+                        onChange={handleInputChange}
+                        value={updateorder?.dili_method}
+                    />
+                    {errors.dili_method && <p className="error">{errors.dili_method}</p>}
 
-                <label>Delivery Cost $:</label>
-                <input
-                    type="text"
-                    id="dili_cost"
-                    name="dili_cost"
-                    onChange={handleInputChange}
-                    value={updateorder?.dili_cost}
-                />
-                {errors.dili_cost && <p className="error">{errors.dili_cost}</p>}
+                    <label>Delivery Cost $:</label>
+                    <input
+                        type="text"
+                        id="dili_cost"
+                        name="dili_cost"
+                        onChange={handleInputChange}
+                        value={updateorder?.dili_cost}
+                    />
+                    {errors.dili_cost && <p className="error">{errors.dili_cost}</p>}
 
-                <label>Assigned Personal:</label>
-                <input
-                    type="text"
-                    id="assignes_personal"
-                    name="assignes_personal"
-                    onChange={handleInputChange}
-                    value={updateorder?.assignes_personal}
-                />
-                {errors.assignes_personal && <p className="error">{errors.assignes_personal}</p>}
+                    <label>Assigned Personal:</label>
+                    <input
+                        type="text"
+                        id="assignes_personal"
+                        name="assignes_personal"
+                        onChange={handleInputChange}
+                        value={updateorder?.assignes_personal}
+                    />
+                    {errors.assignes_personal && <p className="error">{errors.assignes_personal}</p>}
 
-                <label>Notes:</label>
-                <textarea
-                    id="notes"
-                    name="notes"
-                    onChange={handleInputChange}
-                    value={updateorder?.notes}
-                />
-                {errors.notes && <p className="error">{errors.notes}</p>}
+                    <label>Notes:</label>
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        onChange={handleInputChange}
+                        value={updateorder?.notes}
+                    />
+                    {errors.notes && <p className="error">{errors.notes}</p>}
 
-                <button type="button" onClick={handleUpdate}>Update</button>
-            </form>
-        </div>
+                    <button type="button" onClick={handleUpdate}>Update</button>
+                </form>
+            </div>
+        </LayoutNew>
     );
 }
 
