@@ -9,7 +9,7 @@ import Product from './ItemComponent/product';
 import DiliveryDetails from './ManagerComponent/managerdetails';
 import ManagerUpdateItem from './ManagerComponent/UpdateMnaneger';
 import Card from './ItemComponent/card sample'
-import Nav from './Nav/Navbar'
+
 
 
 
