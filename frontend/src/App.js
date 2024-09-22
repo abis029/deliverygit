@@ -1,36 +1,60 @@
+import React, { useState } from "react";
+import './summa/styles/style.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import './App.css';
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
-
+// Manager Components
 import ManagerSignUp from './ManagerComponent/ManagerSignUp';
 import ManagerSignin from './ManagerComponent/ManagerSignin';
-import Product from './ItemComponent/product';
-import DiliveryDetails from './ManagerComponent/managerdetails';
+import DeliveryDetails from './ManagerComponent/managerdetails';
 import ManagerUpdateItem from './ManagerComponent/UpdateMnaneger';
-import Card from './ItemComponent/card sample'
 
+// Item Components
+import Product from './ItemComponent/product';
+import Card from './ItemComponent/card sample';
 
+// Screens
+import HomeScreen from './summa/screens/HomeScreen';
+import ProductScreen from './summa/screens/ProductScreen';
+import CartScreen from './summa/screens/CartScreen';
+import DeliveryForm from './summa/screens/DeliveryForm';
+import CheckoutScreen from './summa/screens/CheckoutScreen';  // New import
+
+// Components
+import Navbar from './summa/components/Navbar';
+import Backdrop from "./summa/components/Backdrop";
+import SideDrawer from "./summa/components/SideDrawer";
 
 
 function App() {
+  const [sideToggle, setSideToggle] = useState(false);
+
   return (
-    <div className="App">
- <Router>
+    <Router>
+     
+      <Backdrop show={sideToggle} click={() => setSideToggle(false)} />
 
- <Routes>
+      <Routes>
+        {/* Home and Product Routes */}
+        <Route path='/' element={<HomeScreen />} />
+        <Route path='/product/:id' element={<ProductScreen />} />
+        <Route path='/cart' element={<CartScreen />} />
+        <Route path='/checkout' element={<CheckoutScreen />} />
+        <Route path='/delivery' element={<DeliveryForm />} />
 
- <Route path='/' element={<Product/>}></Route>
+        {/* Manager Routes */}
+        <Route path='/manager' element={<ManagerSignUp />} />
+        <Route path='/manager/login' element={<ManagerSignin />} />
+        <Route path='/manager/details' element={<DeliveryDetails />} />
+        <Route path='/manager/update/:id' element={<ManagerUpdateItem />} />
 
- <Route path='/manager' element={<ManagerSignUp/>}></Route>
- <Route path='/itemdetails' element={<Card/>}></Route>
-<Route path='/managerDet' element={<DiliveryDetails/>}></Route>
-<Route path="/ManUpdate:id" element={<ManagerUpdateItem/>}></Route>
+        {/* Other Routes */}
+        <Route path='/home' element={<Product />} />
+        <Route path='/itemdetails' element={<Card />} />
 
-
-
-   </Routes>
-   </Router>
-    </div>
+        {/* 404 Route */}
+        <Route path='*' element={<h2>404: Page Not Found</h2>} />
+      </Routes>
+    </Router>
   );
 }
 

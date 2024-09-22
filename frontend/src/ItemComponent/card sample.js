@@ -13,7 +13,10 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import EditForm from './EditItem';
+import AddressList from './Address';
+
 import { Typography } from 'antd';
+import { useLocation } from 'react-router-dom';
 const { Title } = Typography;
 const { Meta } = AntCard;
 
@@ -25,6 +28,9 @@ function ItemDetails() {
   const [editingItem, setEditingItem] = useState(null); // Track item being edited
   const [form] = Form.useForm(); // Form for editing item details
   const navigate = useNavigate(); // Initialize useNavigate
+  const location = useLocation();
+  const { subtotal, discount, total } = location.state || {}; // Access the values
+  const [isNewModalVisible, setIsNewModalVisible] = useState(false); // New modal state
 
 
   const getFetchData = async () => {
@@ -83,6 +89,12 @@ function ItemDetails() {
     }
   };
 
+   // New modal handler
+   const handleNewModalOpen = () => {
+    setIsNewModalVisible(true);
+  };
+  
+
   return (
     <LayoutNew>
       <Space
@@ -112,8 +124,17 @@ function ItemDetails() {
       >
       
       </div>
+     
+      <AntButton
+                        type="primary"
+                        style={{ marginRight: '20px',backgroundColor:'blue',color:'black' }}
+                        onClick={handleNewModalOpen}
+                        
+                      >
+                        <EditOutlined  />qwerty
+                      </AntButton>
 
-      <Container>
+      <Container>       
         <ContentContainer>
           <CardsContainer>
               {/* Search input */}
@@ -125,6 +146,7 @@ function ItemDetails() {
           onPressEnter={() => filterData(searchKey)} // Trigger search on Enter
 
         />
+
             <Row gutter={[16, 16]}>
               {showDiscounts.map((item) => (
                 <Col key={item._id} xs={24}>
@@ -185,10 +207,15 @@ function ItemDetails() {
           </CardsContainer>
 
           <RightBox>
+              <h3>Order Summary</h3>
+              <p>Subtotal: ${subtotal?.toFixed(2)}</p>
+              <p>Discount: ${discount?.toFixed(2)}</p>
+              <p>Total: ${total?.toFixed(2)}</p>
             <AntButton type="primary" style={{ width: '100%' }}>
               Proceed
             </AntButton>
           </RightBox>
+
         </ContentContainer>
 
         {/* Modal for Editing Item */}
@@ -218,6 +245,25 @@ function ItemDetails() {
             </AntButton>
           </div>
         </Modal>
+
+             {/* New Modal */}
+
+<Modal
+  title="New Modal"
+  open={isNewModalVisible}
+  onCancel={() => setIsNewModalVisible(false)}
+  footer={null}
+>
+  <AddressList
+    items={showDiscounts}
+    onEdit={handleEdit}
+    onDelete={handleDelete}
+    selectedCardId={selectedCardId}
+    setSelectedCardId={setSelectedCardId}
+  />
+  <AntButton onClick={() => setIsNewModalVisible(false)}>Close</AntButton>
+</Modal>
+
       </Container>
     </LayoutNew>
   );
@@ -291,12 +337,18 @@ const RightBox = styled.div`
   height: auto; /* Height is auto to fit content */
   background-color: #ffffff; /* White background */
   border-radius: 8px;
-  padding: 20px;
+  padding: 10px; /* Reduce padding */
   display: flex;
-  align-items: center;
-  justify-content: center; /* Center the button */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
   margin-left: 15px;
   margin-right: 15px;
+
+  /* Optional: Add a bit of space between the items */
+  & > p, h3 { 
+    margin-bottom: 5px; /* Adjust margin between elements */
+  }
 `;
+
 
 export default ItemDetails;
