@@ -16,7 +16,7 @@ app.use("/api/managers", managerroutes);
 const PORT = process.env.PORT || 8020;
 
 mongoose
-  .connect("mongodb+srv://abis:1234@cluster0.ozfh0ei.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+  .connect("mongodb+srv://Thanu:Thanu23@cluster3.hdavn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster3")
   .then(() => {
     console.log(`Connected to MongoDB`);
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
