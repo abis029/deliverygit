@@ -134,32 +134,8 @@ const App = ({ children, userType }) => {
 
 
       <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
-        <Header
-          style={{
-            position: "fixed",
-            top: 0,
-            left: collapsed ? 80 : 200,
-            width: `calc(100% - ${collapsed ? 80 : 200}px)`,
-            height: "64px",
-            backgroundColor: "#5F6F52",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            zIndex: 1,
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              minWidth: 0,
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-        
-            
-          </div>
-        </Header>
+
+
 
         <Content style={{ marginTop: 64, padding: 24  }}>
           <div

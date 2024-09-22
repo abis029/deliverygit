@@ -21,7 +21,8 @@ const CheckoutScreen = () => {
       state: { 
         subtotal: cartTotalAmount, 
         discount: discountAmount, 
-        total: totalAmount 
+        total: totalAmount,
+        items: cartItems // Pass cart items here
       } 
     });
   };

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card as AntCard, Row, Col, Button as AntButton, Input, message, Checkbox, Modal, Form, Space } from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import LayoutNew from '../Layout';
 import {
@@ -14,23 +13,24 @@ import {
 } from '@ant-design/icons';
 import EditForm from './EditItem';
 import AddressList from './Address';
-
 import { Typography } from 'antd';
 import { useLocation } from 'react-router-dom';
+
 const { Title } = Typography;
 const { Meta } = AntCard;
 
 function ItemDetails() {
   const [showDiscounts, setShowDiscounts] = useState([]);
   const [searchKey, setSearchKey] = useState('');
-  const [selectedCardId, setSelectedCardId] = useState(null); // Track selected card ID
-  const [isModalVisible, setIsModalVisible] = useState(false); // Control modal visibility
-  const [editingItem, setEditingItem] = useState(null); // Track item being edited
-  const [form] = Form.useForm(); // Form for editing item details
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [selectedCardId, setSelectedCardId] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
   const location = useLocation();
-  const { subtotal, discount, total } = location.state || {}; // Access the values
-  const [isNewModalVisible, setIsNewModalVisible] = useState(false); // New modal state
+  const { subtotal, discount, total, items } = location.state || {};
+  const [isNewModalVisible, setIsNewModalVisible] = useState(false);
+  const [selectedItemDetails, setSelectedItemDetails] = useState(null);
 
 
   const getFetchData = async () => {
@@ -68,16 +68,16 @@ function ItemDetails() {
   };
 
   const handleEdit = (item) => {
-    setEditingItem(item); // Set the item to be edited
-    form.setFieldsValue(item); // Populate the form with item details
-    setIsModalVisible(true); // Show the modal
+    setEditingItem(item);
+    form.setFieldsValue(item);
+    setIsModalVisible(true);
   };
 
   const handleUpdate = async (values) => {
     try {
       const response = await axios.put(`http://localhost:8020/api/items/item_update`, {
         ...values,
-        id: editingItem._id, // Include the ID for the update
+        id: editingItem._id,
       });
       if (response.data.success) {
         message.success('Item updated successfully!');
@@ -89,11 +89,9 @@ function ItemDetails() {
     }
   };
 
-   // New modal handler
-   const handleNewModalOpen = () => {
+  const handleNewModalOpen = () => {
     setIsNewModalVisible(true);
   };
-  
 
   return (
     <LayoutNew>
@@ -119,102 +117,61 @@ function ItemDetails() {
         style={{
           marginBottom: '16px',
           display: 'flex',
-          alignItems: 'center',
+          justifyContent: 'center', // Center the button
         }}
       >
-      
+        <AntButton
+          type="primary"
+          style={{ color: 'white' }}
+          onClick={handleNewModalOpen}
+        >
+          <EditOutlined /> Select the Delivery Addresss
+        </AntButton>
       </div>
-     
-      <AntButton
-                        type="primary"
-                        style={{ marginRight: '20px',backgroundColor:'blue',color:'black' }}
-                        onClick={handleNewModalOpen}
-                        
-                      >
-                        <EditOutlined  />qwerty
-                      </AntButton>
 
-      <Container>       
+      <Container>
         <ContentContainer>
           <CardsContainer>
-              {/* Search input */}
-        <Input
-          placeholder="Search..."
-          prefix={<SearchOutlined />}
-          onChange={(e) => setSearchKey(e.target.value)}
-          style={{ marginRight: '8px', marginBottom:'10px' }}
-          onPressEnter={() => filterData(searchKey)} // Trigger search on Enter
-
-        />
-
-            <Row gutter={[16, 16]}>
-              {showDiscounts.map((item) => (
-                <Col key={item._id} xs={24}>
-                  <StyledCard hoverable>
-                    <CardHeader>
-                      <Checkbox
-                        checked={selectedCardId === item._id}
-                        onChange={() => setSelectedCardId(item._id)}
-                        style={{ transform: 'scale(1.5)', marginRight: '10px' }} // Increase size and add spacing
-                      />
-                      <ItemTitle>{item.emaill}</ItemTitle>
-                      <AntButton
-                        type="primary"
-                        style={{ marginRight: '20px',backgroundColor:'white',color:'black' }}
-                        onClick={() => handleEdit(item)}
-                        
-                      >
-                        <EditOutlined  />
-                      </AntButton>
-                    </CardHeader>
-                    <Meta
-                      description={
-                        <ItemDescription>
-                          <div>Name: {item.fnamee} {item.lnamee}</div>
-                          <div>Address: {item.address}</div>
-                          <div>Phone: {item.p_nbb}</div>
-                          <div>Zip Code: {item.zipcode}</div>
-                        </ItemDescription>
-                      }
-                    />
-                    <CardFooter>
-                      <Button danger
-                        type="primary"
-                        style={{
-                          color: 'white',
-                          marginRight: '20px',
-                          marginBottom: '10px', // Move button upwards
-                        }}
-                        onClick={() => handleDelete(item._id)}
-                      >
-                        <DeleteOutlined /> Delete
-                      </Button>
-                    </CardFooter>
-                  </StyledCard>
-                </Col>
-              ))}
-            </Row>
-            <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
-              <Button 
-                type="primary" 
-                icon={<PlusOutlined />} 
-                onClick={() => navigate('/')} 
-                style={{marginBottom:'12px'}}
-              >
-                Add New Delivery Address
-              </Button>
-            </div>
+          
+            {items && items.map(item => (
+              <StyledCard key={item._id}>
+                  <ItemTitle>{item.name}</ItemTitle>
+                  <ItemDescription>{item.description}</ItemDescription>
+              
+                <div style={{marginLeft:'500px'}}>
+                  <p>Qty: {item.cartQuantity}</p>
+                  <p>Price: ${item.price}</p>
+                </div>
+                
+              </StyledCard>
+            ))}
           </CardsContainer>
 
           <RightBox>
-              <h3>Order Summary</h3>
-              <p>Subtotal: ${subtotal?.toFixed(2)}</p>
-              <p>Discount: ${discount?.toFixed(2)}</p>
-              <p>Total: ${total?.toFixed(2)}</p>
-            <AntButton type="primary" style={{ width: '100%' }}>
-              Proceed
-            </AntButton>
-          </RightBox>
+      <h3 style={{ textAlign: 'center' }}>Order Summary</h3>
+      {selectedItemDetails && (
+        <div style={{marginLeft:'30px' }}>
+          <p><strong>Selected Address:</strong> {selectedItemDetails.emaill}</p>
+          <p>Name: {selectedItemDetails.fnamee} {selectedItemDetails.lnamee}</p>
+          <p>Address: {selectedItemDetails.address}</p>
+          <p>Phone: {selectedItemDetails.p_nbb}</p>
+          <p>Zip Code: {selectedItemDetails.zipcode}</p>
+        </div>
+      )}
+
+      <SummaryCard>
+        <p style={{ textAlign: 'right' }}>Subtotal: ${subtotal?.toFixed(2)}</p>
+        <p style={{ textAlign: 'right' }}>Discount: ${discount?.toFixed(2)}</p>
+        <div style={{ color: '#06D001', fontWeight: 'bold', textAlign: 'right' }}>
+          <p>Total: ${total?.toFixed(2)}</p>
+        </div>
+        <SummaryFooter>
+          <AntButton type="primary" style={{ width: '100%' }}>
+            Proceed
+          </AntButton>
+        </SummaryFooter>
+      </SummaryCard>
+    </RightBox>
 
         </ContentContainer>
 
@@ -223,8 +180,8 @@ function ItemDetails() {
           title="Edit Item"
           open={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
-          footer={null} // Remove default footer
-          width={800} // Set the width to 800px or any desired value
+          footer={null}
+          width={800}
         >
           <EditForm form={form} />
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
@@ -246,24 +203,54 @@ function ItemDetails() {
           </div>
         </Modal>
 
-             {/* New Modal */}
+        {/* New Modal */}
+        <Modal
+          title="New Modal"
+          open={isNewModalVisible}
+          onCancel={() => setIsNewModalVisible(false)}
+          footer={null}
+        >
+          
+          <AddressList
+            items={showDiscounts}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            selectedCardId={selectedCardId}
+            setSelectedCardId={setSelectedCardId}
+            searchKey={searchKey} // Pass search key
+            setSearchKey={setSearchKey} // Pass setter function
+          />
+          <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+            <AntButton 
+              type="primary" 
+              icon={<PlusOutlined />} 
+              onClick={() => navigate('/')} 
+              style={{ marginBottom: '12px' }}
+            >
+              Add New Delivery Address
+            </AntButton>
+          </div>
 
-<Modal
-  title="New Modal"
-  open={isNewModalVisible}
-  onCancel={() => setIsNewModalVisible(false)}
-  footer={null}
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px' }}>
+          <AntButton onClick={() => setIsNewModalVisible(false)}>Close</AntButton>
+
+          <AntButton 
+  type="primary" 
+  onClick={() => {
+    const selectedItem = showDiscounts.find(item => item._id === selectedCardId);
+    if (selectedItem) {
+      setSelectedItemDetails(selectedItem);
+    }
+    setIsNewModalVisible(false);
+  }}
 >
-  <AddressList
-    items={showDiscounts}
-    onEdit={handleEdit}
-    onDelete={handleDelete}
-    selectedCardId={selectedCardId}
-    setSelectedCardId={setSelectedCardId}
-  />
-  <AntButton onClick={() => setIsNewModalVisible(false)}>Close</AntButton>
-</Modal>
+  OK
+</AntButton>
 
+    
+    </div>
+          
+        </Modal>
       </Container>
     </LayoutNew>
   );
@@ -277,50 +264,52 @@ const Container = styled.div`
   display: flex;
 `;
 
-const SearchContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
 const ContentContainer = styled.div`
   display: flex;
-  flex-grow: 1; /* Allow it to take the remaining space */
+  flex-grow: 1;
   margin-top: 20px;
   width: 500px;
 `;
 
 const CardsContainer = styled.div`
-  width: auto; /* Set this to the desired width (e.g., 100%, 80%, etc.) */
-  overflow-y: auto; /* Enable vertical scrolling */
-  flex-grow: 1; /* Allow cards to take the remaining space */
-  max-height: 80vh; /* Set a max height for the scrollable area */
+  width: auto;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: 80vh;
 `;
 
 const StyledCard = styled(AntCard)`
   background-color: #F3EEEA;
-  height: 210px; /* Fixed height for each card */
-  width: auto; /* Full width of the column */
+  height: 130px;
+  width: auto;
+  margin-bottom: 16px;
+  display: flex;
 
   .ant-card-body {
     padding: 0px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures footer is at the bottom */
-    text-align: left; /* Aligns text to the left */
+    justify-content: space-between;
+    text-align: left;
     margin-left: 25px;
-    height: 100%; /* Allow footer to be positioned correctly */
+    height: 100%;
   }
 `;
 
 const CardHeader = styled.div`
-  margin-top: 12px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Centers items vertically */
+  align-items: center;
 `;
 
 const ItemDescription = styled.span`
-  font-weight: bold;
-`;
+  font-weight: normal; /* Normal weight for description */
+  color: #555; /* Slightly lighter color for description */
+  font-size: 14px; /* Adjust font size if needed */
+  margin-left:0px;
+
+  `;
 
 const ItemTitle = styled.span`
   font-weight: bold;
@@ -328,27 +317,39 @@ const ItemTitle = styled.span`
 
 const CardFooter = styled.div`
   display: flex;
-  justify-content: flex-end; /* Aligns footer content to the right */
-  margin-top: auto; /* Pushes footer to the bottom of the card */
+  justify-content: flex-end;
+  margin-top: auto;
 `;
+
 
 const RightBox = styled.div`
-  width: 550px; /* Width for the rectangle box */
-  height: auto; /* Height is auto to fit content */
-  background-color: #ffffff; /* White background */
+  width: 550px;
+  height: auto;
+  background-color: #ffffff;
   border-radius: 8px;
-  padding: 10px; /* Reduce padding */
+  padding: 10px;
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
+  flex-direction: column;
+  align-items: left;
   margin-left: 15px;
   margin-right: 15px;
-
-  /* Optional: Add a bit of space between the items */
-  & > p, h3 { 
-    margin-bottom: 5px; /* Adjust margin between elements */
-  }
+  position: relative; /* Allows absolute positioning of footer */
 `;
 
+const SummaryCard = styled(AntCard)`
+  width: 100%;
+  margin-top: 15px; /* Pushes the card to the bottom */
+  padding: 0px;
+  align-items: center;
+  height:170px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const SummaryFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+`;
 
 export default ItemDetails;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card as AntCard, Row, Col, Button as AntButton, Checkbox } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { Input } from 'antd';
 
 const CardsContainer = styled.div`
   width: auto; /* Set this to the desired width (e.g., 100%, 80%, etc.) */
@@ -26,11 +27,26 @@ const StyledCard = styled(AntCard)`
   }
 `;
 
-const AddressList = ({ items, onEdit, onDelete, selectedCardId, setSelectedCardId }) => {
+const AddressList = ({ items, onEdit, onDelete, selectedCardId, setSelectedCardId, searchKey, setSearchKey }) => {
+  
+  // Filter items based on the search key
+  const filteredItems = items.filter(item =>
+    item && item.emaill && item. fnamee.toLowerCase().includes(searchKey.toLowerCase()) // Assuming `address` is the property to search
+  );
+
   return (
     <CardsContainer>
+
+      <Input
+        placeholder="Search addresses..."
+        prefix={<SearchOutlined />}
+        value={searchKey}
+        onChange={(e) => setSearchKey(e.target.value)} // Update search key
+        style={{ marginRight: '8px', marginBottom: '10px' }}
+      />
+
       <Row gutter={[16, 16]}>
-        {items.map((item) => (
+        {filteredItems.map((item) => ( // Use filteredItems here
           <Col key={item._id} xs={24}>
             <StyledCard hoverable>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -59,7 +75,8 @@ const AddressList = ({ items, onEdit, onDelete, selectedCardId, setSelectedCardI
                 }
               />
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
-                <AntButton danger
+                <AntButton
+                  danger
                   type="primary"
                   onClick={() => onDelete(item._id)}
                   style={{ color: 'white', marginRight: '20px' }}
