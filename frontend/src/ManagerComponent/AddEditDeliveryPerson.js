@@ -1,5 +1,8 @@
+
+
+
 import React from "react";
-import { Form, Row, Col, Input, Button, Cascader } from "antd";
+import { Form, Row, Col, Input, Button, Cascader, Select } from "antd";
 
 const residences = [
   {
@@ -82,7 +85,6 @@ const residences = [
     ],
   }
 ];
-
 const DeliveryPersonForm = ({ form, onFinish }) => {
   return (
     <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -166,9 +168,12 @@ const DeliveryPersonForm = ({ form, onFinish }) => {
           <Form.Item
             name="current_status"
             label="Status"
-            rules={[{ required: true, message: "Please input the status!" }]}
+            rules={[{ required: true, message: "Please select the status!" }]}
           >
-            <Input />
+            <Select placeholder="Select Status">
+              <Select.Option value="Available">Available</Select.Option>
+              <Select.Option value="Unavailable">Unavailable</Select.Option>
+            </Select>
           </Form.Item>
         </Col>
       </Row>
