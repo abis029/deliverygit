@@ -14,7 +14,9 @@ img {
   -o-object-fit: contain;
      object-fit: contain;
 }
-
+.admin-text {
+  color: white; /* Change the color to white */
+}
 .navbar {
   width: 100%;
   height: 98px;

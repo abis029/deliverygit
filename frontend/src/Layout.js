@@ -22,13 +22,13 @@ const adminUserItems = [
   {
     key: "main1",
     icon: <ApartmentOutlined />,
-    label: "Item",
+    label: "Employees",
     children: [
 
       {
         key: "1",
         icon: <SyncOutlined />,
-        label: "itemdetail",
+        label: "Delivery Employees",
       },
 
       
@@ -80,7 +80,7 @@ const App = ({ children, userType }) => {
   const handleMenuClick = (item) => {
 
     if (item.key === "1") {
-      navigate("/itemdetails");
+      navigate("/delper");
     }
 
     if (item.key === "11") {
@@ -106,7 +106,7 @@ const App = ({ children, userType }) => {
   collapsible
   collapsed={collapsed}
   onCollapse={(value) => setCollapsed(value)}
-  width={200}
+  width={225}
   style={{ backgroundColor: "#D1BB9E", overflow: "hidden", position: "fixed", height: "100vh", left: 0 }}
 >
   <style>

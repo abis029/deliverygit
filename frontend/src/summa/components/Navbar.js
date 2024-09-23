@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartTotalQuantity, getTotals } from '../features/slice/cartSlice';
 import SearchBar from './SearchBar';
+import {UserOutlined,
+} from '@ant-design/icons';
 
 const Navbar = ({ click }) => {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ const Navbar = ({ click }) => {
       <div className="navbar-logo">
         <Link to="/"><h2>Shopping Cart</h2></Link>
       </div>
+      
       <SearchBar />
       <ul className="navbar-links">
         <li>
@@ -30,14 +33,38 @@ const Navbar = ({ click }) => {
             </span>
           </Link>
         </li>
+         <li>
+          <Link to="/delper" className='cart-link'>
+            <i className='fas fa-shopping-cart'></i>
+            <span>
+              Admin
+              <span className='cartlogo-badge'><UserOutlined/></span>
+            </span>
+          </Link>
+        </li>
+        
+      
       </ul>
+    
       <div className="hamburger-menu" onClick={click}>
         <div></div>
         <div></div>
         <div></div>
       </div>
+      
     </nav>
   );
 };
+/*
+<li>
+        <Link to="/">
+         <i className='fas fa-shopping-cart'></i>
+            <span>
+              Admin
+              <span className='cartlogo-badge'></span>
+            </span>
+            </Link>
+        </li>
 
+  */
 export default Navbar;

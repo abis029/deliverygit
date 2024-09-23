@@ -3,6 +3,8 @@ import './summa/styles/style.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Manager Components
+import Table from './ManagerComponent/table';
+import Deli from './ManagerComponent/DeliveryPersonD'
 import ManagerSignUp from './ManagerComponent/ManagerSignUp';
 import ManagerSignin from './ManagerComponent/ManagerSignin';
 import DeliveryDetails from './ManagerComponent/managerdetails';
@@ -34,6 +36,7 @@ function App() {
      <Navbar click={() => setSideToggle(true)} />
       <SideDrawer show={sideToggle} click={() => setSideToggle(false)} />
       <Backdrop show={sideToggle} click={() => setSideToggle(false)} />
+
       <Routes>
         {/* Home and Product Routes */}
         <Route path='/' element={<HomeScreen />} />
@@ -43,6 +46,9 @@ function App() {
         <Route path='/delivery' element={<DeliveryForm />} />
 
         {/* Manager Routes */}
+        <Route path='/table' element={<Table />} />
+        <Route path='/delper' element={<Deli />} />
+
         <Route path='/manager' element={<ManagerSignUp />} />
         <Route path='/manager/login' element={<ManagerSignin />} />
         <Route path='/manager/details' element={<DeliveryDetails />} />

@@ -3,6 +3,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const itemRoutes = require("./routes/itemroutes");
 const managerroutes = require("./routes/managerroutes");
+const deliveryPersonRoutes = require('./routes/deliveryperson');
+
+
 
 const app = express();
 
@@ -12,6 +15,8 @@ app.use(express.json());
 // Assign unique paths to each router
 app.use("/api/items", itemRoutes);
 app.use("/api/managers", managerroutes);
+app.use('/api/delivery-person', deliveryPersonRoutes);
+
 
 const PORT = process.env.PORT || 8020;
 
