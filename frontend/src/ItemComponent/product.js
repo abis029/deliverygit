@@ -167,12 +167,11 @@ function Product() {
 
     const handleModalOk = () => {
         setModal({ ...modal, visible: false });
-        navigate("/itemdetails");
+        navigate("/checkout");
     };
 
     return (
-        <LayoutNew>
-            <Layout>
+  <div>
                 <div style={{ width: '60%', margin: '0 auto', backgroundColor: '#f4f4f4', padding: '20px', borderRadius: '8px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
                     <Steps
                         size="small"
@@ -180,97 +179,95 @@ function Product() {
                         items={[{ title: 'Login' }, { title: 'Delivery' }, { title: 'Payment' }]}
                         style={{ marginBottom: '20px' }}
                     />
-                    <Form
-                        form={form}
-                        name="register"
-                        onFinish={handleSubmit}
-                        style={{
-                            maxWidth: '600px',
-                            margin: '0 auto',
-                            backgroundColor: '#EDE8DC',
-                            padding: '20px',
-                            borderRadius: '8px',
-                            color: '#333',
-                        }}
-                        scrollToFirstError
-                    >
-                        <Form.Item
-                            name="emaill"
-                            label="E-mail"
-                            rules={[
-                                { type: 'email', message: 'The input is not valid E-mail!' },
-                                { required: true, message: 'Please input your E-mail!' }
-                            ]}
-                        >
-                            <Input name="emaill" value={order.emaill} onChange={handleOnChange} />
-                        </Form.Item>
+<Form
+  form={form}
+  name="register"
+  layout="horizontal"  // Ensure form elements are aligned
+  labelCol={{ span: 8 }}  // Label column width (controls label alignment)
+  wrapperCol={{ span: 16 }}  // Input field column width
+  onFinish={handleSubmit}
+  style={{
+    maxWidth: '600px',
+    margin: '0 auto',
+    backgroundColor: '#EDE8DC',
+    padding: '20px',
+    borderRadius: '8px',
+    color: '#333',
+  }}
+  scrollToFirstError
+>
+  <Form.Item
+    name="emaill"
+    label="E-mail"
+    rules={[
+      { type: 'email', message: 'The input is not valid E-mail!' },
+      { required: true, message: 'Please input your E-mail!' }
+    ]}
+  >
+    <Input name="emaill" value={order.emaill} onChange={handleOnChange} />
+  </Form.Item>
 
-                        <Form.Item
-                            name="fnamee"
-                            label="First Name"
-                            rules={[{ required: true, message: 'Please input your First Name!', whitespace: true }]}
-                        >
-                            <Input name="fnamee" value={order.fnamee} onChange={handleOnChange} />
-                        </Form.Item>
+  <Form.Item
+    name="fnamee"
+    label="First Name"
+    rules={[{ required: true, message: 'Please input your First Name!', whitespace: true }]}
+  >
+    <Input name="fnamee" value={order.fnamee} onChange={handleOnChange} />
+  </Form.Item>
 
-                        <Form.Item
-                            name="lnamee"
-                            label="Last Name"
-                            rules={[{ required: true, message: 'Please input your Last Name!', whitespace: true }]}
-                        >
-                            <Input name="lnamee" value={order.lnamee} onChange={handleOnChange} />
-                        </Form.Item>
+  <Form.Item
+    name="lnamee"
+    label="Last Name"
+    rules={[{ required: true, message: 'Please input your Last Name!', whitespace: true }]}
+  >
+    <Input name="lnamee" value={order.lnamee} onChange={handleOnChange} />
+  </Form.Item>
 
-                        <Form.Item
-                            name="habitual_residence"
-                            label="Habitual Residence"
-                            rules={[{ required: true, message: 'Please select your habitual residence!' }]}
-                        >
-                            <Cascader options={residences} onChange={(value) => setOrder({ ...order, habitual_residence: value })} />
-                        </Form.Item>
+  <Form.Item
+    name="habitual_residence"
+    label="Habitual Residence"
+    rules={[{ required: true, message: 'Please select your habitual residence!' }]}
+  >
+    <Cascader options={residences} onChange={(value) => setOrder({ ...order, habitual_residence: value })} />
+  </Form.Item>
 
-                        <Form.Item
-                            name="address"
-                            label="Address"
-                            rules={[{ required: true, message: 'Please input your address!', whitespace: true }]}
-                        >
-                            <Input name="address" value={order.address} onChange={handleOnChange} />
-                        </Form.Item>
+  <Form.Item
+    name="address"
+    label="Address"
+    rules={[{ required: true, message: 'Please input your address!', whitespace: true }]}
+  >
+    <Input name="address" value={order.address} onChange={handleOnChange} />
+  </Form.Item>
 
-                        <Form.Item
-                            name="p_nbb"
-                            label="Phone Number"
-                            rules={[
-                                { required: true, message: 'Please input your phone number!' },
-                                {
-                                    pattern: /^\d{10}$/,
-                                    message: 'Phone number must be exactly 10 digits!'
-                                }
-                            ]}
-                        >
-                            <Input name="p_nbb" value={order.p_nbb} onChange={handleOnChange} />
-                        </Form.Item>
+  <Form.Item
+    name="p_nbb"
+    label="Phone Number"
+    rules={[
+      { required: true, message: 'Please input your phone number!' },
+      { pattern: /^\d{10}$/, message: 'Phone number must be exactly 10 digits!' }
+    ]}
+  >
+    <Input name="p_nbb" value={order.p_nbb} onChange={handleOnChange} />
+  </Form.Item>
 
-                        <Form.Item
-                            name="zipcode"
-                            label="Zip Code"
-                            rules={[
-                                { required: true, message: 'Please input your zip code!' },
-                                {
-                                    pattern: /^\d{5}$/,
-                                    message: 'Zip code must be at least 5 digits!'
-                                }
-                            ]}
-                        >
-                            <Input name="zipcode" value={order.zipcode} onChange={handleOnChange} />
-                        </Form.Item>
+  <Form.Item
+    name="zipcode"
+    label="Zip Code"
+    rules={[
+      { required: true, message: 'Please input your zip code!' },
+      { pattern: /^\d{5}$/, message: 'Zip code must be at least 5 digits!' }
+    ]}
+  >
+    <Input name="zipcode" value={order.zipcode} onChange={handleOnChange} />
+  </Form.Item>
 
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
+  <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+    <Button type="primary" htmlType="submit">
+      Submit
+    </Button>
+  </Form.Item>
+</Form>
+
                 </div>
                 <Modal
                     title={modal.isSuccess ? 'Success' : 'Error'}
@@ -306,8 +303,7 @@ function Product() {
       
                     </div>
                 </Modal>
-            </Layout>
-        </LayoutNew>
+                    </div>
     );
 }
 

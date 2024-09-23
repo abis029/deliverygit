@@ -94,7 +94,7 @@ function ItemDetails() {
   };
 
   return (
-    <LayoutNew>
+    <div>
       <Space
         style={{
           background: '#001529',
@@ -103,10 +103,11 @@ function ItemDetails() {
           borderRadius: '8px',
           justifyContent: 'space-between',
           display: 'flex',
+          marginTop:'50px'
         }}
       >
         <Space>
-          <StockOutlined style={{ fontSize: '24px', marginRight: '8px' }} />
+          <StockOutlined style={{ fontSize: '24px', marginRight: '8px',marginTop:'15px'}} />
           <Title level={2} style={{ fontSize: '24px', marginTop: '8px', color: 'white' }}>
             Delivery Details
           </Title>
@@ -224,7 +225,7 @@ function ItemDetails() {
             <AntButton 
               type="primary" 
               icon={<PlusOutlined />} 
-              onClick={() => navigate('/')} 
+              onClick={() => navigate('/home')} 
               style={{ marginBottom: '12px' }}
             >
               Add New Delivery Address
@@ -252,7 +253,8 @@ function ItemDetails() {
           
         </Modal>
       </Container>
-    </LayoutNew>
+      </div>
+    
   );
 }
 
